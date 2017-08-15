@@ -83,34 +83,50 @@ namespace HoloUi
             rt.sizeDelta = new Vector2((width * 2) - 6, 130 - 6);
         }
 
+#if UNITY_EDITOR
+        private void updateIconDelayed()
+        {
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                updateIcon();
+            };
+        }
+#endif
+
+        private void updateIcon()
+        {
+            if (this == null)
+            {
+                return;
+            }
+            destroyIcon();
+            if (data.icon != null)
+            {
+                GameObject iconInstance = Instantiate(data.icon, transform);
+                iconInstance.name = "icon";
+                if (dataDefinesSizeAndPosition)
+                {
+                    iconInstance.transform.localPosition = new Vector3(-2, 0, 0);
+                    resizeText(1f, 100);
+                }
+            }
+            else if (dataDefinesSizeAndPosition)
+            {
+                resizeText(0, 150);
+            }
+            oldDataDefinesSizeAndPosition = dataDefinesSizeAndPosition;
+            oldIcon = data.icon;
+        }
+
         public void updateData()
         {
             if (oldIcon != data.icon || dataDefinesSizeAndPosition != oldDataDefinesSizeAndPosition)
             {
-                UnityEditor.EditorApplication.delayCall += () =>
-                {
-                    if (this == null)
-                    {
-                        return;
-                    }
-                    destroyIcon();
-                    if (data.icon != null)
-                    {
-                        GameObject iconInstance = Instantiate(data.icon, transform);
-                        iconInstance.name = "icon";
-                        if (dataDefinesSizeAndPosition)
-                        {
-                            iconInstance.transform.localPosition = new Vector3(-2, 0, 0);
-                            resizeText(1f, 100);
-                        }
-                    }
-                    else if(dataDefinesSizeAndPosition)
-                    {
-                        resizeText(0, 150);
-                    }
-                    oldDataDefinesSizeAndPosition = dataDefinesSizeAndPosition;
-                    oldIcon = data.icon;
-                };
+#if UNITY_EDITOR
+                updateIconDelayed();
+#else
+                updateIcon();
+#endif
             }
             
 
@@ -126,10 +142,12 @@ namespace HoloUi
             destroyIcon();
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             updateData();
         }
+#endif
 
     }
 }

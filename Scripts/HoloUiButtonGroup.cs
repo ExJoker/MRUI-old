@@ -23,7 +23,11 @@ namespace HoloUi {
 
         private void OnValidate()
         {
+#if UNITY_EDITOR
+            updateDataDelayed();
+#else
             updateData();
+#endif
         }
         
         void destroyButtons()
@@ -40,35 +44,44 @@ namespace HoloUi {
             }
         }
 
-        // Update is called once per frame
-        void updateData() {
+#if UNITY_EDITOR
+        void updateDataDelayed()
+        {
             UnityEditor.EditorApplication.delayCall += () =>
             {
-                if (this == null)
-                {
-                    // because this is a delayed call it might be that the class already has been destroyed
-                    return;
-                }
-                destroyButtons();
-                if (data != null)
-                {
-                    // create new buttons and center them
-                    int rows = System.Math.Min(maxRows, data.Count);
-                    int columns = data.Count / maxRows + 1;
-                    for (int i = 0; i < data.Count; i++)
-                    {
-                        HoloUiButtonData buttonData = data[i];
-                        GameObject btn = Instantiate(HoloButtonPrefab, transform);
-                        btn.GetComponent<HoloUiButton>().data = buttonData;
-                        btn.GetComponent<HoloUiButton>().updateData();
-
-                        int j = i % rows;
-                        btn.transform.localPosition = new Vector3(
-                            ((i / rows) - ((columns - 1) / 2f)) * buttonDistanceHorizontal,
-                            -(j - (rows - 1) / 2f) * buttonDistanceVertical);
-                    }
-                }
+                updateData();
             };
+        }
+#endif
+
+        // Update is called once per frame
+        void updateData() {
+            
+            if (this == null)
+            {
+                // because this is a delayed call it might be that the class already has been destroyed
+                return;
+            }
+            destroyButtons();
+            if (data != null)
+            {
+                // create new buttons and center them
+                int rows = System.Math.Min(maxRows, data.Count);
+                int columns = data.Count / maxRows + 1;
+                for (int i = 0; i < data.Count; i++)
+                {
+                    HoloUiButtonData buttonData = data[i];
+                    GameObject btn = Instantiate(HoloButtonPrefab, transform);
+                    btn.GetComponent<HoloUiButton>().data = buttonData;
+                    btn.GetComponent<HoloUiButton>().updateData();
+
+                    int j = i % rows;
+                    btn.transform.localPosition = new Vector3(
+                        ((i / rows) - ((columns - 1) / 2f)) * buttonDistanceHorizontal,
+                        -(j - (rows - 1) / 2f) * buttonDistanceVertical);
+                }
+            }
+            
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoloUiCircleButtonGroup : MonoBehaviour {
+public class MRUiCircleButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

@@ -55,7 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 550b08a270e7bd14e85c109e6ee425cc, type: 2}
+  - {fileID: 2100000, guid: 33a8bc413cf5b404ba0262e3254b5360, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -89,11 +89,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1964452267961952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8a2a5e19e7a4ae42b1ab8d5dd34f0d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8576aefe55644b542afe21b617ddcfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  segments: 5
-  parts: 40
-  innerRadius: 0.16
-  outerRadius: 0.42
-  width: 0.03
+  segments: 2
+  parts: 36
+  innerRadius: 0.04
+  outerRadius: 0.1
+  width: 0.04
+  angle: 0

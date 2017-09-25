@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace MRUi
 {
+    [ExecuteInEditMode]
     public class MRUiCircleButtonGroup : MonoBehaviour
     {
         // TODO: combine with MRUiButtonGroup?
@@ -17,27 +18,28 @@ namespace MRUi
         [HideInInspector]
         public bool forceUpdate = false;
 
-        [Tooltip("number of segments the whole circle consists of. this defines the amount of vertices/triangles used")]
-        public int parts = 36;
+        // "number of segments the whole circle consists of. this defines the amount of vertices/triangles used"
+        // TODO: calculate - espeically for 5 and 7
+        private int parts = 36;
 
         [Tooltip("radius from center to circle")]
-        public float innerRadius = 2f;
+        public float innerRadius = .04f;
 
         [Tooltip("radius from center to outer circle")]
-        public float outerRadius = 5f;
+        public float outerRadius = .1f;
 
         [Tooltip("width of the circle")]
-        public float width = .2f;
+        public float width = .04f;
 
         // Use this for initialization
         void Start()
         {
-            updateData();
+            forceUpdate = true;
         }
 
         private void OnValidate()
         {
-            updateData();
+            forceUpdate = true;
         }
 
         public void Update()
@@ -57,6 +59,21 @@ namespace MRUi
                 return;
             }
             destroyButtons();
+
+            switch (data.Count)
+            {
+                case 10:
+                case 8:
+                case 5:
+                    parts = 40;
+                    break;
+                case 7:
+                    parts = 49;
+                    break;
+                default:
+                    parts = 36;
+                    break;
+            }
 
             if (data != null && CircleButtonPrefab != null && data.Count > 0)
             {

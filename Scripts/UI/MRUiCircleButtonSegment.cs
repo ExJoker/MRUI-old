@@ -19,13 +19,13 @@ namespace MRUi
         public int parts = 36;
 
         [Tooltip("radius from center to circle")]
-        public float innerRadius = 2f;
+        public float innerRadius = .04f;
 
         [Tooltip("radius from center to outer circle")]
-        public float outerRadius = 5f;
+        public float outerRadius = .1f;
 
         [Tooltip("width of the circle")]
-        public float width = .2f;
+        public float width = .04f;
 
         public float angle;
 
@@ -49,7 +49,7 @@ namespace MRUi
         {
             transform.eulerAngles= new Vector3(0, 0, angle);
             this.angle = angle;
-            Debug.Log("Set Angle to " + angle);
+            // Debug.Log("Set Angle to " + angle);
         }
 
         public void updateData()

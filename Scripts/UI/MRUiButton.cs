@@ -11,6 +11,7 @@ using UnityEngine.UI;
 /// </summary>
 namespace MRUi
 {
+    [ExecuteInEditMode]
     public class MRUiButton : MonoBehaviour
     {
         public MRUiButtonData data;
@@ -43,7 +44,11 @@ namespace MRUi
         // renderer is needed to change the material when highlighted (hovered) or pressed (tabbed)
         [Tooltip("Rednerer that we will assign the material to. If this is null we will try to get the Renderer from the component.")]
         public Renderer rend;
-        
+
+#if UNITY_EDITOR
+        private bool forceUpdate = false;
+#endif
+
         public bool dataChanged()
         {
             return (oldData != data || oldData.icon != data.icon || oldData.title != data.title);
@@ -62,6 +67,7 @@ namespace MRUi
             updateData();
         }
 
+        
         private void updateChanged()
         {
             if (dataChanged() && OnDataChanged != null)
@@ -74,23 +80,25 @@ namespace MRUi
         public void updateData()
         {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                if (this != null)
-                {
-                    updateChanged();
-                }
-            };
+            forceUpdate = true;
 #else
             updateChanged();
 #endif
         }
         
-
 #if UNITY_EDITOR
         private void OnValidate()
         {
             updateData();
+        }
+
+        private void Update()
+        {
+            if (forceUpdate)
+            {
+                updateChanged();
+                forceUpdate = false;
+            }
         }
 #endif
 

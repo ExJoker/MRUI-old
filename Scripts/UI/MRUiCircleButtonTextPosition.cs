@@ -8,7 +8,6 @@ namespace MRUi
     [ExecuteInEditMode]
     public class MRUiCircleButtonTextPosition : MonoBehaviour
     {
-        private Text text;
         public GameObject textGo;
         
 
@@ -21,7 +20,6 @@ namespace MRUi
             {
                 return;
             }
-            text = textGo.GetComponentInChildren<Text>();
             updateTextPos();
             // center on curve
             float angle = segment.angle;

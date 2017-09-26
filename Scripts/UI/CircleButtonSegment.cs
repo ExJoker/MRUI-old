@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MRUi
+namespace MRUI
 {
+
     /// <summary>
     /// create circle segment mesh for a round button group
     /// this script only creates the mesh, you need the other scripts to make it an interactable button
     /// </summary>
+    [RequireComponent(typeof(MeshRenderer))]
+    [RequireComponent(typeof(MeshFilter))]
+
     [ExecuteInEditMode]
-    public class MRUiCircleButtonSegment : MonoBehaviour
+    public class CircleButtonSegment : MonoBehaviour
     {
         [Tooltip("Number of segments. Defaults to 2 for a half-circle")]
         [Range(1, 8)]
@@ -30,6 +34,7 @@ namespace MRUi
 
         public float angle;
 
+        [HideInInspector]
         public UnityEvent OnAngleChange;
 
         private Mesh mesh;
@@ -66,7 +71,7 @@ namespace MRUi
                 return;
             }
             mesh.Clear();
-            mesh.name = "MRUi Circle Segment";
+            mesh.name = "MRUI Circle Segment";
 
             genRoundSegment(0);
         }

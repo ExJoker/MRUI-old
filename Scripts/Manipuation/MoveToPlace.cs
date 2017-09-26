@@ -6,7 +6,7 @@ using HoloToolkit.Unity.SpatialMapping;
 /// based on https://developer.microsoft.com/en-us/windows/mixed-reality/holograms_230
 /// </summary>
 
-namespace MRUi
+namespace MRUI
 {
     /// <summary>
     /// Enumeration containing the surfaces on which a GameObject

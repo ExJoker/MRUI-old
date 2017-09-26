@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MRUi {
+namespace MRUI {
 
-    public class MRUiButtonGroup : MonoBehaviour {
-
+    public class ButtonGroup : MonoBehaviour {
 
         [Tooltip("amount of buttons that can be selected at once. For a select-like behaviour use 1, 0 means all options can be selected")]
         public int maxSelect = 0;
@@ -16,7 +15,7 @@ namespace MRUi {
 
         public int maxRows = 3;
 
-        public List<MRUiButtonData> data;
+        public List<ButtonData> data;
 
         [HideInInspector]
         public bool forceUpdate = false;
@@ -32,7 +31,7 @@ namespace MRUi {
             updateData();
         }
 
-        public delegate void OnSelectedDelegate(MRUiButtonData data);
+        public delegate void OnSelectedDelegate(ButtonData data);
         /// <summary>
         /// events that gets thrown when user presses one of the buttons
         /// </summary>
@@ -67,12 +66,12 @@ namespace MRUi {
                 int columns = data.Count / maxRows + 1;
                 for (int i = 0; i < data.Count; i++)
                 {
-                    MRUiButtonData buttonData = data[i];
+                    ButtonData buttonData = data[i];
                     GameObject btn = Instantiate(ButtonPrefab, transform);
                     
-                    btn.GetComponent<MRUiButton>().OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
-                    btn.GetComponent<MRUiButton>().data = buttonData;
-                    btn.GetComponent<MRUiButton>().updateData();
+                    btn.GetComponent<MRUI.Button>().OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
+                    btn.GetComponent<MRUI.Button>().data = buttonData;
+                    btn.GetComponent<MRUI.Button>().updateData();
 
                     int j = i % rows;
                     btn.transform.localPosition = new Vector3(
@@ -85,7 +84,7 @@ namespace MRUi {
         /// <summary>
         /// user selected one of the options by pressing a button 
         /// </summary>
-        public void OnButtonPressed(MRUiButtonData data)
+        public void OnButtonPressed(ButtonData data)
         {
             if (OnSelected != null)
             {

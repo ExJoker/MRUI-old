@@ -6,14 +6,30 @@ using UnityEngine.UI;
 /// <summary>
 /// change text content when button data changes
 /// </summary>
-namespace MRUi
+namespace MRUI
 {
+    [RequireComponent(typeof(MRUI.Button))]
+
     [ExecuteInEditMode]
-    public class MRUiButtonText : MonoBehaviour
+    public class ButtonText : MonoBehaviour
     {
 #if UNITY_EDITOR
         private bool forceUpdate = false;
 #endif
+
+        public void Awake()
+        {
+            MRUI.Button btn = GetComponent<MRUI.Button>();
+            btn.OnDataChanged.AddListener(updateData);
+        }
+
+        public void OnDestroy()
+        {
+            MRUI.Button btn = GetComponent<MRUI.Button>();
+            if (btn != null) {
+                btn.OnDataChanged.RemoveListener(updateData);
+            }
+        }
 
         public void updateData()
         {
@@ -27,7 +43,7 @@ namespace MRUi
 
         private void UpdateText()
         {
-            MRUiButton btn = GetComponent<MRUiButton>();
+            MRUI.Button btn = GetComponent<MRUI.Button>();
             forceUpdate = false;
             GetComponentInChildren<Text>().text = btn.data.title;
         }

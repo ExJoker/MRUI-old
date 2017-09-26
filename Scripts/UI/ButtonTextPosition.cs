@@ -7,15 +7,34 @@ using UnityEngine.UI;
 /// position text based on icon
 /// Made to use in combination with MRUiButton, but can be used without MRUiButton
 /// </summary>
-namespace MRUi
+namespace MRUI
 {
-    public class MRUiButtonTextPosition : MonoBehaviour
+    [RequireComponent(typeof(MRUI.Button))]
+    [RequireComponent(typeof(ButtonIcon))]
+
+    [ExecuteInEditMode]
+    public class ButtonTextPosition : MonoBehaviour
     {
         private Text text;
 
+        public void Awake()
+        {
+            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
+            btnIcon.OnIconChange.AddListener(updateData);
+        }
+
+        private void OnDestroy()
+        {
+            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
+            if (btnIcon != null)
+            {
+                btnIcon.OnIconChange.RemoveListener(updateData);
+            }
+        }
+
         public void updateData()
         {
-            MRUiButton btn = GetComponent<MRUiButton>();
+            MRUI.Button btn = GetComponent<MRUI.Button>();
             if (text == null)
             {
                 text = GetComponentInChildren<Text>();

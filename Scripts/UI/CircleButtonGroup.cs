@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRUi
+namespace MRUI
 {
     [ExecuteInEditMode]
-    public class MRUiCircleButtonGroup : MonoBehaviour
+    public class CircleButtonGroup : MonoBehaviour
     {
         // TODO: combine with MRUiButtonGroup?
         [Tooltip("amount of buttons that can be selected at once. For a select-like behaviour use 1, 0 means all options can be selected")]
@@ -13,7 +13,7 @@ namespace MRUi
 
         public GameObject CircleButtonPrefab;
 
-        public List<MRUiButtonData> data;
+        public List<ButtonData> data;
 
         [HideInInspector]
         public bool forceUpdate = false;
@@ -81,13 +81,13 @@ namespace MRUi
                 float angle = 360 / data.Count;
                 for (int i = 0; i < data.Count; i++)
                 {
-                    MRUiButtonData buttonData = data[i];
+                    ButtonData buttonData = data[i];
                     GameObject btn = Instantiate(CircleButtonPrefab, transform);
 
                     //btn.GetComponent<MRUiButton>().OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
-                    btn.GetComponent<MRUiButton>().data = buttonData;
-                    btn.GetComponent<MRUiButton>().updateData();
-                    MRUiCircleButtonSegment segment = btn.GetComponentInChildren<MRUiCircleButtonSegment>();
+                    btn.GetComponent<MRUI.Button>().data = buttonData;
+                    btn.GetComponent<MRUI.Button>().updateData();
+                    CircleButtonSegment segment = btn.GetComponentInChildren<CircleButtonSegment>();
                     segment.parts = parts;
                     segment.innerRadius = innerRadius;
                     segment.outerRadius = outerRadius;

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MRUi
+namespace MRUI
 {
+    [RequireComponent(typeof(MRUI.Button))]
+
     [ExecuteInEditMode]
-    public class MRUiButtonIcon : MonoBehaviour
+    public class ButtonIcon : MonoBehaviour
     {
+        [HideInInspector]
         public UnityEvent OnIconChange;
 
         [HideInInspector]
@@ -15,9 +18,15 @@ namespace MRUi
 
         public string ICON_NAME = "icon";
 
+        public void Awake()
+        {
+            MRUI.Button btn = GetComponent<MRUI.Button>();
+            btn.OnDataChanged.AddListener(updateData);
+        }
+
         public void updateData()
         {
-            MRUiButton btn = GetComponent<MRUiButton>();
+            MRUI.Button btn = GetComponent<MRUI.Button>();
             destroyIcon();
 
             if (btn.data != null && btn.data.icon != null)
@@ -30,6 +39,11 @@ namespace MRUi
 
         private void OnDestroy()
         {
+            MRUI.Button btn = GetComponent<MRUI.Button>();
+            if (btn != null)
+            {
+                btn.OnDataChanged.RemoveListener(updateData);
+            }
             destroyIcon();
         }
 

@@ -2,7 +2,7 @@
 using UnityEngine.VR.WSA.Input;
 using HoloToolkit.Unity.InputModule;
 
-namespace MRUi
+namespace MRUI
 {
     /// <summary>
     /// Hologram interaction that uses one gestureRecognizer for everything, 
@@ -10,7 +10,7 @@ namespace MRUi
     /// 
     /// It also simulates interactions using touch and mouse events.
     /// </summary>
-    public class MRUiInteractionManager : MonoBehaviour
+    public class InteractionManager : MonoBehaviour
     {
         protected GestureRecognizer gestureRecognizer;
 
@@ -58,7 +58,7 @@ namespace MRUi
             GameObject go = GazeManager.Instance.HitObject;
             if (go != null)
             {
-                MRUiButton holoBtn = UnityHelpers.GetComponentInAllParents<MRUiButton>(go);
+                MRUI.Button holoBtn = UnityHelpers.GetComponentInAllParents<MRUI.Button>(go);
                 if (holoBtn != null && holoBtn.OnPressed != null)
                 {
                     holoBtn.OnPressed.Invoke();

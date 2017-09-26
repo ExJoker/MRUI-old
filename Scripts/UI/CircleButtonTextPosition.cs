@@ -7,18 +7,21 @@ using UnityEngine.UI;
 /// move text according to rotation
 /// </summary>
 
-namespace MRUi
+namespace MRUI
 {
+    [RequireComponent(typeof(MRUI.Button))]
+    [RequireComponent(typeof(MRUI.ButtonText))]
+
     [ExecuteInEditMode]
-    public class MRUiCircleButtonTextPosition : MonoBehaviour
+    public class CircleButtonTextPosition : MonoBehaviour
     {
         public GameObject textGo;
 
-        private MRUiCircleButtonSegment segment;
+        private CircleButtonSegment segment;
 
         void Start()
         {
-            segment = GetComponentInChildren<MRUiCircleButtonSegment>();
+            segment = GetComponentInChildren<CircleButtonSegment>();
             if (segment == null)
             {
                 return;

@@ -2,23 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 /// <summary>
 /// A button always consists of a text field and a background image. 
 /// It can also show an icon (some gameobject).
 /// The icon and the text content are stored in the given ButtonData
 /// </summary>
-namespace MRUi
+namespace MRUI
 {
     [ExecuteInEditMode]
-    public class MRUiButton : MonoBehaviour
+    public class Button : MonoBehaviour
     {
-        public MRUiButtonData data;
-        private MRUiButtonData oldData;
-
-        [Tooltip("Calculate text and icon position. Set to true to make space for the icon automatically, Set it to false if you'd like to manipulate it manually.")]
-        public bool dataDefinesSizeAndPosition = true;
+        public ButtonData data;
+        private ButtonData oldData;
 
         public enum Transition { None, Material };
         public Transition transition;
@@ -35,7 +31,8 @@ namespace MRUi
         [Tooltip("Tapped-event (air tap or clicker, simulated by touch or left click)")]
         public UnityEvent OnPressed;
 
-        [Tooltip("Data has been changed")]
+        // "Data has been changed"
+        [HideInInspector]
         public UnityEvent OnDataChanged;
 
         [Tooltip("Gaze on Button (hover with mouse).")]

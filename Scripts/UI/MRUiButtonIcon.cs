@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 namespace MRUi
 {
+    [ExecuteInEditMode]
     public class MRUiButtonIcon : MonoBehaviour
     {
         public UnityEvent OnIconChange;

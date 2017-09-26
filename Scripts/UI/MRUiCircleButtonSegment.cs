@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace MRUi
 {
@@ -29,6 +30,8 @@ namespace MRUi
 
         public float angle;
 
+        public UnityEvent OnAngleChange;
+
         private Mesh mesh;
         private Vector3[] vertices;
         private Vector3[] normals;
@@ -50,6 +53,10 @@ namespace MRUi
             transform.eulerAngles= new Vector3(0, 0, angle);
             this.angle = angle;
             // Debug.Log("Set Angle to " + angle);
+            if (OnAngleChange != null)
+            {
+                OnAngleChange.Invoke();
+            }
         }
 
         public void updateData()

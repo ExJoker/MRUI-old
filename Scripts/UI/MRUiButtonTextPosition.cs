@@ -22,11 +22,11 @@ namespace MRUi
             }
             if (btn.data != null && btn.data.icon != null)
             {
-                resizeRepositonText(1f, 100);
+                resizeRepositonText(.03f, 130);
             }
             else
             {
-                resizeRepositonText(0, 150);
+                resizeRepositonText(0, 200);
             }
         }
 
@@ -37,11 +37,11 @@ namespace MRUi
                 return;
             }
             RectTransform rt = text.canvas.GetComponent<RectTransform>();
-            rt.localPosition = new Vector3(xPos, 0, -.1f);
-            rt.sizeDelta = new Vector2(width, 65);
+            rt.localPosition = new Vector3(xPos, 0, -.011f);
+            rt.sizeDelta = new Vector2(width, 80);
 
             rt = text.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2((width * 2) - 6, 130 - 6);
+            rt.sizeDelta = new Vector2((width * 2) - 6, 140 - 6);
         }
     }
 }

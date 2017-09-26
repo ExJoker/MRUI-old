@@ -25,6 +25,7 @@ namespace MRUi
             updateIcon();
         }
 
+#if UNITY_EDITOR
         public void OnValidate()
         {
             updateIcon();
@@ -38,6 +39,7 @@ namespace MRUi
                 forceUpdate = false;
             }
         }
+#endif
 
         private void _updateIcon()
         {

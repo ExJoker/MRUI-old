@@ -88,31 +88,33 @@ namespace MRUi
         {
             // 4 per segment
             vertices = new Vector3[4 * (parts / segments) + 4];
+            normals = new Vector3[vertices.Length];
             // create vertices
             for (int i = 0; i < vertices.Length; i += 4)
             {
                 float angle = i * 1f / parts / 2;
                 vertices[i] = createVertice(angle, innerRadius, width / 2);
-                vertices[i+1] = createVertice(angle, innerRadius, -width / 2);
-                vertices[i+2] = createVertice(angle, outerRadius, width / 2);
-                vertices[i+3] = createVertice(angle, outerRadius, -width / 2);
+                normals[i] = createVertice(angle, innerRadius *- 1, width);
+                vertices[i + 1] = createVertice(angle, innerRadius, -width / 2);
+                normals[i + 1] = createVertice(angle, innerRadius *- 1, -width);
+                vertices[i + 2] = createVertice(angle, outerRadius, width / 2);
+                normals[i + 2] = createVertice(angle, outerRadius, width);
+                vertices[i + 3] = createVertice(angle, outerRadius, -width / 2);
+                normals[i + 3] = createVertice(angle, outerRadius, -width);
             }
-
-            normals = new Vector3[vertices.Length];
-
+            
             int startEnd = 0;
             if (segments >= 1)
             {
                 startEnd = 12;
             }
             int[] triangles = new int[(vertices.Length / 4) * 24 + startEnd];
-            normals = new Vector3[vertices.Length];
             // start and end
             if (segments > 1)
             {
-                createRect(triangles, 0, 0, 1, 2, 3);
+                createRect(triangles, 0, 3, 2, 1, 0);
                 createRect(triangles, triangles.Length - 6, 
-                    vertices.Length - 1, vertices.Length - 3, vertices.Length - 2, vertices.Length - 4);
+                    vertices.Length - 4, vertices.Length - 2, vertices.Length - 3, vertices.Length - 1);
             }
 
             // in between
@@ -137,21 +139,23 @@ namespace MRUi
                 t += 6;
             }
 
-            
             for (int i = 0; i < vertices.Length; i++)
             {
-                normals[i] = vertices[i].normalized;
+                normals[i] = normals[i].normalized;
             }
 
             mesh.vertices = vertices;
             mesh.normals = normals;
+            
             mesh.triangles = triangles;
+            //mesh.RecalculateNormals();
 
             if (meshCollider != null)
             {
                 meshCollider.sharedMesh = null;
                 meshCollider.sharedMesh = mesh;
             }
+            
         }
 
 #if UNITY_EDITOR

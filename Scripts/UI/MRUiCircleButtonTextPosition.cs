@@ -25,7 +25,7 @@ namespace MRUi
             }
             // center on curve
             float angle = segment.angle;
-            angle -= 180f / segment.segments;
+            angle += 180f / segment.segments;
             if (angle < 0f)
             {
                 angle += 360;
@@ -42,21 +42,21 @@ namespace MRUi
 
             if (angle >= 90 - 15 && angle <= 90 + 15)
             {
-                cy = .11f;
+                cy = .12f;
             }
             if (angle >= 270 - 15 && angle <= 270 + 15)
             {
-                cy = -.11f;
+                cy = -.12f;
             }
 
             if (angle < 90 || angle > 270)
             {
-                cx += .04f;
+                cx += .09f;
                 text.alignment = TextAnchor.MiddleLeft;
             }
             else
             {
-                cx += -.04f;
+                cx += -.09f;
                 text.alignment = TextAnchor.MiddleRight;
             }
 

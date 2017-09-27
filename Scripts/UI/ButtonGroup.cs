@@ -10,8 +10,8 @@ namespace MRUI {
         [Tooltip("amount of buttons that can be selected at once. For a select-like behaviour use 1, 0 means all options can be selected")]
         public int maxSelect = 0;
 
-        public float buttonDistanceVertical = 3f;
-        public float buttonDistanceHorizontal = 7f;
+        public float buttonDistanceVertical = 0.11f;
+        public float buttonDistanceHorizontal = 0.22f;
 
         public int maxRows = 3;
 

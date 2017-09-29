@@ -17,7 +17,7 @@ namespace MRUI
     public class CircleButtonSegment : MonoBehaviour
     {
         [Tooltip("Number of segments. Defaults to 2 for a half-circle")]
-        [Range(1, 8)]
+        [Range(1, 9)]
         public int segments = 2;
 
         [Tooltip("number of segments the whole circle consists of. this defines the amount of vertices/triangles used")]
@@ -55,7 +55,7 @@ namespace MRUI
 
         public void setAngle(float angle)
         {
-            transform.eulerAngles= new Vector3(0, 0, angle);
+            transform.localEulerAngles = new Vector3(0, 0, angle);
             this.angle = angle;
             // Debug.Log("Set Angle to " + angle);
             if (OnAngleChange != null)
@@ -87,13 +87,14 @@ namespace MRUI
 
         private void createRect(int[] triangles, int offset, int bl, int br, int tl, int tr)
         {
-            triangles[0 + offset] = br;
+            // see https://docs.unity3d.com/Manual/Example-CreatingaBillboardPlane.html
+            triangles[0 + offset] = bl;
             triangles[1 + offset] = tl;
-            triangles[2 + offset] = bl;
+            triangles[2 + offset] = br;
             
-            triangles[3 + offset] = br;
+            triangles[3 + offset] = tl;
             triangles[4 + offset] = tr;
-            triangles[5 + offset] = tl;
+            triangles[5 + offset] = br;
         }
 
         private void genRoundSegment(float degreeStart)
@@ -105,14 +106,25 @@ namespace MRUI
             for (int i = 0; i < vertices.Length; i += 4)
             {
                 float angle = i * 1f / parts / 2;
-                vertices[i] = createVertice(angle, innerRadius, width / 2);
-                normals[i] = createVertice(angle, innerRadius *- 1, width);
-                vertices[i + 1] = createVertice(angle, innerRadius, -width / 2);
-                normals[i + 1] = createVertice(angle, innerRadius *- 1, -width);
-                vertices[i + 2] = createVertice(angle, outerRadius, width / 2);
-                normals[i + 2] = createVertice(angle, outerRadius, width);
-                vertices[i + 3] = createVertice(angle, outerRadius, -width / 2);
-                normals[i + 3] = createVertice(angle, outerRadius, -width);
+                // lower front
+                vertices[i] = createVertice(angle, innerRadius, -width / 2);
+                normals[i] = -Vector3.forward;
+                //normals[i] = createVertice(angle, innerRadius / 2, -width);
+
+                // lower back
+                vertices[i + 1] = createVertice(angle, innerRadius, width / 2);
+                normals[i + 1] = Vector3.forward;
+                //normals[i + 1] = createVertice(angle, innerRadius / 2, width);
+
+                // upper front
+                vertices[i + 2] = createVertice(angle, outerRadius, -width / 2);
+                normals[i + 2] = -Vector3.forward;
+                //normals[i + 2] = -createVertice(angle, outerRadius * 1.5f, -width);
+
+                // upper back
+                vertices[i + 3] = createVertice(angle, outerRadius, width / 2);
+                normals[i + 3] = Vector3.forward;
+                //normals[i + 3] = createVertice(angle, outerRadius * 1.5f, width);
             }
             
             int startEnd = 0;

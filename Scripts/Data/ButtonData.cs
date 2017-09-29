@@ -9,6 +9,14 @@ using UnityEngine;
 namespace MRUI
 {
     [System.Serializable]
+    public struct ButtonMaterial
+    {
+        public Material normal;
+        public Material highlighted;
+        public Material pressed;
+    }
+
+    [System.Serializable]
     public class ButtonData
     {
         [Tooltip("Title text shown in the button")]
@@ -29,6 +37,8 @@ namespace MRUI
         [Tooltip("Use disabled-material and ignore selection")]
         public bool active = true;
 
+        public ButtonMaterial material;
+
         public ButtonData copy()
         {
             return new ButtonData()
@@ -38,10 +48,17 @@ namespace MRUI
                 data = data,
                 selected = selected,
                 active = active,
-                iconScale = iconScale
+                iconScale = iconScale,
+                material = material
             };
         }
 
+        /// <summary>
+        /// compare data of two ButtonData, returns true if it is the same.
+        /// (ignores purely optical attributes: material and scale)
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool compare(ButtonData other)
         {
             return (title != other.title ||
@@ -49,7 +66,7 @@ namespace MRUI
                 data != other.data ||
                 selected != other.selected ||
                 active != other.active); 
-            //note that we ignore the scale because an object with another size should not be different.
+            //note that we ignore the material and scale because the core data should still be the same.
         }
     }
 }

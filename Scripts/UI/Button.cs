@@ -38,10 +38,6 @@ namespace MRUI
         [Tooltip("Gaze on Button (hover with mouse).")]
         public UnityEvent OnHighlighted;
 
-        // renderer is needed to change the material when highlighted (hovered) or pressed (tabbed)
-        [Tooltip("Rednerer that we will assign the material to. If this is null we will try to get the Renderer from the component.")]
-        public Renderer rend;
-
 #if UNITY_EDITOR
         private bool forceUpdate = false;
 #endif
@@ -53,14 +49,6 @@ namespace MRUI
 
         void Start()
         {
-            if (rend == null)
-            {
-                rend = GetComponent<Renderer>();
-            }
-            if (normalMaterial != null && rend != null)
-            {
-                rend.material = normalMaterial;
-            }
             updateData();
         }
 

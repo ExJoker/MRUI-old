@@ -22,7 +22,7 @@ namespace MRUI
             return null;
         }
 
-        public Vector3? iconScaleByName(string type)
+        public Vector3? iconScaleByName(string name)
         {
             foreach (Icon icon in icons)
             {

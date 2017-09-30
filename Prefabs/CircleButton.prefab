@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 114526129091964884}
   - component: {fileID: 114906642480303352}
   - component: {fileID: 114340809003511936}
+  - component: {fileID: 114134506594123078}
   m_Layer: 0
   m_Name: CircleButton
   m_TagString: Untagged
@@ -107,7 +108,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1132104363316000}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -167,6 +168,18 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 0}
+--- !u!114 &114134506594123078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1819258450244644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fb5d655f76d5d478b03d2c7a95745d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 23774768929364534}
 --- !u!114 &114340809003511936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,7 +191,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b98375458d298844b819d12117fd921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fixScale: {x: 0.02, y: 0.02, z: 1}
 --- !u!114 &114419832086399396
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -260,7 +272,7 @@ MonoBehaviour:
   parts: 36
   innerRadius: 0.04
   outerRadius: 0.1
-  width: 0.04
+  width: 0.02
   angle: 0
   OnAngleChange:
     m_PersistentCalls:
@@ -292,10 +304,14 @@ MonoBehaviour:
   data:
     title: Button
     icon: {fileID: 1277682036606650, guid: 651d5ed8c2fd57640925b320cee308be, type: 2}
-    iconScale: {x: 0.04, y: 0.04, z: 1}
+    iconScale: {x: 0.02, y: 0.02, z: 1}
     data: 
     selected: 0
     active: 1
+    material:
+      normal: {fileID: 0}
+      highlighted: {fileID: 0}
+      pressed: {fileID: 0}
   transition: 0
   normalMaterial: {fileID: 0}
   highlightedMaterial: {fileID: 0}
@@ -317,7 +333,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  rend: {fileID: 0}
 --- !u!114 &114646928848927510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -448,6 +463,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.11999971}
+  m_AnchoredPosition: {x: 0, y: 0.11999911}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

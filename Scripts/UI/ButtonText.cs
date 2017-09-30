@@ -26,7 +26,8 @@ namespace MRUI
         public void OnDestroy()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
-            if (btn != null) {
+            if (btn != null)
+            {
                 btn.OnDataChanged.RemoveListener(updateData);
             }
         }
@@ -44,7 +45,9 @@ namespace MRUI
         private void UpdateText()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
+#if UNITY_EDITOR
             forceUpdate = false;
+#endif
             GetComponentInChildren<Text>().text = btn.data.title;
         }
 
@@ -56,6 +59,6 @@ namespace MRUI
                 UpdateText();
             }
         }
-    }
 #endif
+    }
 }

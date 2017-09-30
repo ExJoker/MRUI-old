@@ -96,5 +96,10 @@ MonoBehaviour:
   parts: 36
   innerRadius: 0.04
   outerRadius: 0.1
-  width: 0.04
+  width: 0.02
   angle: 0
+  OnAngleChange:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null

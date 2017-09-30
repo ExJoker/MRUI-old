@@ -77,6 +77,11 @@ namespace MRUI
             updateData();
         }
 
+        public void OnEnable()
+        {
+            updateData();
+        }
+
         private void Update()
         {
             if (forceUpdate)

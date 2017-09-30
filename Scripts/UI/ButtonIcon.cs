@@ -18,7 +18,7 @@ namespace MRUI
 
         public string ICON_NAME = "icon";
 
-        public void Awake()
+        public void Start()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
             btn.OnDataChanged.AddListener(updateData);

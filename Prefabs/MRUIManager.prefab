@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4555397623685964}
   - component: {fileID: 114700110214018440}
   m_Layer: 0
-  m_Name: MRUiGestureManager
+  m_Name: MRUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

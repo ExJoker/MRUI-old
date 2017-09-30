@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace MRUI
 {
@@ -31,6 +32,9 @@ namespace MRUI
         [Tooltip("width of the circle")]
         public float width = .04f;
 
+        [SerializeField]
+        public OnSelectedEvent OnSelected;
+
         // Use this for initialization
         void Start()
         {
@@ -48,6 +52,17 @@ namespace MRUI
             {
                 updateData();
                 forceUpdate = false;
+            }
+        }
+
+        /// <summary>
+        /// user selected one of the options by pressing a button 
+        /// </summary>
+        public void OnButtonPressed(ButtonData data)
+        {
+            if (OnSelected != null)
+            {
+                OnSelected.Invoke(data.data);
             }
         }
 
@@ -82,12 +97,15 @@ namespace MRUI
                 for (int i = 0; i < data.Count; i++)
                 {
                     ButtonData buttonData = data[i];
-                    GameObject btn = Instantiate(CircleButtonPrefab, transform);
+                    GameObject btnInst = Instantiate(CircleButtonPrefab, transform);
 
-                    //btn.GetComponent<MRUiButton>().OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
-                    btn.GetComponent<MRUI.Button>().data = buttonData;
-                    btn.GetComponent<MRUI.Button>().updateData();
-                    CircleButtonSegment segment = btn.GetComponentInChildren<CircleButtonSegment>();
+                    MRUI.Button btn = btnInst.GetComponent<MRUI.Button>();
+                    btn.OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
+                    btn.data = buttonData;
+                    btn.updateData();
+                    
+                    
+                    CircleButtonSegment segment = btnInst.GetComponentInChildren<CircleButtonSegment>();
                     segment.parts = parts;
                     segment.innerRadius = innerRadius;
                     segment.outerRadius = outerRadius;

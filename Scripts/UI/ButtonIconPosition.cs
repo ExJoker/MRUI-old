@@ -19,6 +19,8 @@ namespace MRUI
         [Tooltip("Scale for the icon")]
         public Vector3 fixScale = new Vector3(0.03f, 0.03f, 1f);
 
+        private bool eventsAdded = false;
+
         public void Start()
         {
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
@@ -28,17 +30,41 @@ namespace MRUI
 
         private void OnDestroy()
         {
+            if (!eventsAdded)
+            {
+                return;
+            }
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
             if (btnIcon != null)
             {
                 btnIcon.OnIconChange.RemoveListener(updateIcon);
             }
+            eventsAdded = false;
         }
 
 #if UNITY_EDITOR
+        public void OnEnable()
+        {
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                if (this == null)
+                {
+                    return;
+                }
+                updateIcon();
+            };
+        }
+
         public void OnValidate()
         {
-            updateIcon();
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                if (this == null)
+                {
+                    return;
+                }
+                updateIcon();
+            };
         }
 #endif
 
@@ -49,8 +75,16 @@ namespace MRUI
             {
                 return;
             }
+            Button btn = GetComponent<MRUI.Button>();
+            if (btn != null && btn.data != null)
+            {
+                btnIcon.icon.transform.localScale = btn.data.iconScale;
+            }
+            else
+            {
+                btnIcon.icon.transform.localScale = fixScale;
+            }
             btnIcon.icon.transform.localPosition = fixPosition;
-            btnIcon.icon.transform.localScale = fixScale;
         }
     }
 }

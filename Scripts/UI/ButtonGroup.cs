@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 namespace MRUI {
 
+    [System.Serializable]
+    public class OnSelectedEvent : UnityEvent<string> { }
+
     public class ButtonGroup : MonoBehaviour {
 
         [Tooltip("amount of buttons that can be selected at once. For a select-like behaviour use 1, 0 means all options can be selected")]
@@ -20,6 +23,12 @@ namespace MRUI {
         [HideInInspector]
         public bool forceUpdate = false;
 
+        /// <summary>
+        /// events that gets thrown when user presses one of the buttons
+        /// </summary>
+        [SerializeField]
+        public OnSelectedEvent OnSelected;
+
         public GameObject ButtonPrefab;
         
 	    void Start() {
@@ -30,12 +39,6 @@ namespace MRUI {
         {
             updateData();
         }
-
-        public delegate void OnSelectedDelegate(ButtonData data);
-        /// <summary>
-        /// events that gets thrown when user presses one of the buttons
-        /// </summary>
-        public event OnSelectedDelegate OnSelected;
 
         void destroyButtons()
         {
@@ -67,14 +70,15 @@ namespace MRUI {
                 for (int i = 0; i < data.Count; i++)
                 {
                     ButtonData buttonData = data[i];
-                    GameObject btn = Instantiate(ButtonPrefab, transform);
-                    
-                    btn.GetComponent<MRUI.Button>().OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
-                    btn.GetComponent<MRUI.Button>().data = buttonData;
-                    btn.GetComponent<MRUI.Button>().updateData();
+                    GameObject btnInst = Instantiate(ButtonPrefab, transform);
+
+                    MRUI.Button btn = btnInst.GetComponent<MRUI.Button>();
+                    btn.OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
+                    btn.data = buttonData;
+                    btn.updateData();
 
                     int j = i % rows;
-                    btn.transform.localPosition = new Vector3(
+                    btnInst.transform.localPosition = new Vector3(
                         ((i / rows) - ((columns - 1) / 2f)) * buttonDistanceHorizontal,
                         -(j - (rows - 1) / 2f) * buttonDistanceVertical);
                 }
@@ -88,7 +92,7 @@ namespace MRUI {
         {
             if (OnSelected != null)
             {
-                OnSelected.Invoke(data);
+                OnSelected.Invoke(data.data);
             }
         }
 

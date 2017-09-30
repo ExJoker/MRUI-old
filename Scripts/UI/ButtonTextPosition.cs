@@ -17,23 +17,59 @@ namespace MRUI
     {
         private Text text;
 
-        public void Awake()
+        public void OnEnable()
         {
-            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
-            btnIcon.OnIconChange.AddListener(updateData);
+            AddEvents();
+            UpdateData();
         }
 
-        private void OnDestroy()
+        public void OnDisable()
+        {
+            RemoveEvents();
+        }
+
+        public void AddEvents()
+        {
+            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
+            btnIcon.OnIconChanged.AddListener(UpdatePosition);
+
+            Button btn = GetComponent<Button>();
+            btn.OnDataChanged.AddListener(UpdateData);
+        }
+
+        public void RemoveEvents()
         {
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
             if (btnIcon != null)
             {
-                btnIcon.OnIconChange.RemoveListener(updateData);
+                btnIcon.OnIconChanged.RemoveListener(UpdatePosition);
+            }
+
+            Button btn= GetComponent<Button>();
+            if (btn != null)
+            {
+                btn.OnDataChanged.RemoveListener(UpdateData);
             }
         }
 
-        public void updateData()
+        public void UpdateData()
         {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                UpdatePosition();
+            };
+#else
+            UpdatePosition();
+#endif
+        }
+
+        public void UpdatePosition()
+        {
+            if (this == null)
+            {
+                return;
+            }
             MRUI.Button btn = GetComponent<MRUI.Button>();
             if (text == null)
             {
@@ -48,6 +84,7 @@ namespace MRUI
                 resizeRepositonText(0, 200);
             }
         }
+
 
         private void resizeRepositonText(float xPos, int width)
         {

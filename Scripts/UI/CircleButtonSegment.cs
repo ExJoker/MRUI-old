@@ -35,12 +35,20 @@ namespace MRUI
         public float angle;
 
         [HideInInspector]
-        public UnityEvent OnAngleChange;
+        public UnityEvent OnAngleChanged;
 
         private Mesh mesh;
         private Vector3[] vertices;
         private Vector3[] normals;
         private MeshCollider meshCollider;
+
+        private void Awake()
+        {
+            if (OnAngleChanged == null)
+            {
+                OnAngleChanged = new UnityEvent();
+            }
+        }
 
         public void Update()
         {
@@ -58,9 +66,9 @@ namespace MRUI
             transform.localEulerAngles = new Vector3(0, 0, angle);
             this.angle = angle;
             // Debug.Log("Set Angle to " + angle);
-            if (OnAngleChange != null)
+            if (OnAngleChanged != null)
             {
-                OnAngleChange.Invoke();
+                OnAngleChanged.Invoke();
             }
         }
 

@@ -16,9 +16,6 @@ namespace MRUI
 
         public List<ButtonData> data;
 
-        [HideInInspector]
-        public bool forceUpdate = false;
-
         // "number of segments the whole circle consists of. this defines the amount of vertices/triangles used"
         // TODO: calculate - espeically for 5 and 7
         private int parts = 36;
@@ -34,26 +31,6 @@ namespace MRUI
 
         [SerializeField]
         public OnSelectedEvent OnSelected;
-
-        // Use this for initialization
-        void Start()
-        {
-            forceUpdate = true;
-        }
-
-        private void OnValidate()
-        {
-            forceUpdate = true;
-        }
-
-        public void Update()
-        {
-            if (forceUpdate)
-            {
-                updateData();
-                forceUpdate = false;
-            }
-        }
 
         /// <summary>
         /// user selected one of the options by pressing a button 
@@ -102,7 +79,7 @@ namespace MRUI
                     MRUI.Button btn = btnInst.GetComponent<MRUI.Button>();
                     btn.OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
                     btn.data = buttonData;
-                    btn.updateData();
+                    btn.UpdateData();
                     
                     
                     CircleButtonSegment segment = btnInst.GetComponentInChildren<CircleButtonSegment>();
@@ -144,7 +121,7 @@ namespace MRUI
             }
         }
 
-        public void updateData()
+        public void UpdateData()
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.delayCall += () =>

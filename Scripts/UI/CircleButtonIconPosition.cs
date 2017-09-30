@@ -13,26 +13,38 @@ namespace MRUI
 
         private Vector3 fixPosition = new Vector3(0, 0, -0.021f);
 
-        public void Start()
+        public void OnEnable()
         {
-            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
-            btnIcon.OnIconChange.AddListener(updateIcon);
-            CircleButtonSegment segment = GetComponentInChildren<CircleButtonSegment>();
-            segment.OnAngleChange.AddListener(updateIcon);
+            AddEvents();
             updateIcon();
         }
 
-        private void OnDestroy()
+        public void OnDisable()
+        {
+            RemoveEvents();
+        }
+
+        public void AddEvents()
+        {
+            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
+            btnIcon.OnIconChanged.AddListener(updateIcon);
+
+            CircleButtonSegment segment = GetComponentInChildren<CircleButtonSegment>();
+            segment.OnAngleChanged.AddListener(updateIcon);
+        }
+
+        public void RemoveEvents()
         {
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
             if (btnIcon != null)
             {
-                btnIcon.OnIconChange.RemoveListener(updateIcon);
+                btnIcon.OnIconChanged.RemoveListener(updateIcon);
             }
+
             CircleButtonSegment segment = GetComponentInChildren<CircleButtonSegment>();
             if (segment != null)
             {
-                segment.OnAngleChange.RemoveListener(updateIcon);
+                segment.OnAngleChanged.RemoveListener(updateIcon);
             }
         }
 

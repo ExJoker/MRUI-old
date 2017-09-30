@@ -13,17 +13,24 @@ namespace MRUI
     [ExecuteInEditMode]
     public class ButtonText : MonoBehaviour
     {
-#if UNITY_EDITOR
-        private bool forceUpdate = false;
-#endif
+        public void OnEnable()
+        {
+            AddEvents();
+            updateData();
+        }
 
-        public void Awake()
+        public void OnDisable()
+        {
+            RemoveEvents();
+        }
+
+        public void AddEvents()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
             btn.OnDataChanged.AddListener(updateData);
         }
 
-        public void OnDestroy()
+        public void RemoveEvents()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
             if (btn != null)
@@ -34,31 +41,13 @@ namespace MRUI
 
         public void updateData()
         {
-            // update text next frame - we setting the text directly does not work in Editor!
-#if UNITY_EDITOR
-            forceUpdate = true;
-#else
             UpdateText();
-#endif
         }
 
         private void UpdateText()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
-#if UNITY_EDITOR
-            forceUpdate = false;
-#endif
             GetComponentInChildren<Text>().text = btn.data.title;
         }
-
-#if UNITY_EDITOR
-        private void Update()
-        {
-            if (forceUpdate)
-            {
-                UpdateText();
-            }
-        }
-#endif
     }
 }

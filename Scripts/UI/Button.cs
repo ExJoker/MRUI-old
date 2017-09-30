@@ -14,7 +14,6 @@ namespace MRUI
     public class Button : MonoBehaviour
     {
         public ButtonData data;
-        private ButtonData oldData;
 
         public enum Transition { None, Material };
         public Transition transition;
@@ -31,66 +30,34 @@ namespace MRUI
         [Tooltip("Tapped-event (air tap or clicker, simulated by touch or left click)")]
         public UnityEvent OnPressed;
 
-        // "Data has been changed"
-        [HideInInspector]
+        [Tooltip("Emitted when data has been changed")]
         public UnityEvent OnDataChanged;
 
         [Tooltip("Gaze on Button (hover with mouse).")]
         public UnityEvent OnHighlighted;
 
-#if UNITY_EDITOR
-        private bool forceUpdate = false;
-#endif
-
-        public bool dataChanged()
+        private void Awake()
         {
-            return (oldData != data || oldData.icon != data.icon || oldData.title != data.title);
+            if (OnDataChanged == null)
+                OnDataChanged = new UnityEvent();
         }
 
-        void Start()
+        public void UpdateData()
         {
-            updateData();
-        }
-
-        
-        private void updateChanged()
-        {
-            if (dataChanged() && OnDataChanged != null)
+            if (OnDataChanged != null)
             {
                 OnDataChanged.Invoke();
-                oldData = data.copy();
             }
         }
-
-        public void updateData()
-        {
-#if UNITY_EDITOR
-            forceUpdate = true;
-#else
-            updateChanged();
-#endif
-        }
         
-#if UNITY_EDITOR
         private void OnValidate()
         {
-            updateData();
+            UpdateData();
         }
 
         public void OnEnable()
         {
-            updateData();
+            UpdateData();
         }
-
-        private void Update()
-        {
-            if (forceUpdate)
-            {
-                updateChanged();
-                forceUpdate = false;
-            }
-        }
-#endif
-
     }
 }

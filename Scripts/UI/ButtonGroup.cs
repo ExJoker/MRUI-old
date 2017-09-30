@@ -20,9 +20,6 @@ namespace MRUI {
 
         public List<ButtonData> data;
 
-        [HideInInspector]
-        public bool forceUpdate = false;
-
         /// <summary>
         /// events that gets thrown when user presses one of the buttons
         /// </summary>
@@ -31,16 +28,16 @@ namespace MRUI {
 
         public GameObject ButtonPrefab;
         
-	    void Start() {
-            updateData();
+	    void OnEnable() {
+            UpdateData();
         }
 
         private void OnValidate()
         {
-            updateData();
+            UpdateData();
         }
 
-        void destroyButtons()
+        void DestroyButtons()
         {
             List<GameObject> children = new List<GameObject>();
             // we can not delete items from a list while iterating over it
@@ -61,7 +58,21 @@ namespace MRUI {
                 // because this is a delayed call it might be that the object has already been destroyed
                 return;
             }
-            destroyButtons();
+
+            // delay creation/deletion of objects
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                if (this == null)
+                {
+                    return;
+                }
+                DestroyButtons();
+                CreateButtons();
+            };
+        }
+
+        void CreateButtons()
+        {
             if (data != null && ButtonPrefab != null && data.Count > 0)
             {
                 // create new buttons and center them
@@ -75,7 +86,7 @@ namespace MRUI {
                     MRUI.Button btn = btnInst.GetComponent<MRUI.Button>();
                     btn.OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
                     btn.data = buttonData;
-                    btn.updateData();
+                    btn.UpdateData();
 
                     int j = i % rows;
                     btnInst.transform.localPosition = new Vector3(
@@ -96,24 +107,8 @@ namespace MRUI {
             }
         }
 
-        public void Update()
-        {
-            if (forceUpdate)
-            {
-                updateData();
-                forceUpdate = false;
-            }
-        }
-
-        public void updateData() {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                updateButtons();
-            };
-#else
+        public void UpdateData() {
             updateButtons();
-#endif
         }
     }
 }

@@ -19,57 +19,45 @@ namespace MRUI
         [Tooltip("Scale for the icon")]
         public Vector3 fixScale = new Vector3(0.03f, 0.03f, 1f);
 
-        private bool eventsAdded = false;
-
-        public void Start()
+        public void OnEnable()
         {
-            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
-            btnIcon.OnIconChange.AddListener(updateIcon);
-            updateIcon();
+            AddEvents();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                UpdateIcon();
+            };
+#else
+            UpdateIcon();
+#endif
         }
 
-        private void OnDestroy()
+        public void OnDisable()
         {
-            if (!eventsAdded)
-            {
-                return;
-            }
+            RemoveEvents();
+        }
+
+        public void AddEvents()
+        {
+            ButtonIcon btnIcon = GetComponent<ButtonIcon>();
+            btnIcon.OnIconChanged.AddListener(UpdateIcon);
+        }
+
+        public void RemoveEvents()
+        {
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
             if (btnIcon != null)
             {
-                btnIcon.OnIconChange.RemoveListener(updateIcon);
+                btnIcon.OnIconChanged.RemoveListener(UpdateIcon);
             }
-            eventsAdded = false;
         }
 
-#if UNITY_EDITOR
-        public void OnEnable()
+        public void UpdateIcon()
         {
-            UnityEditor.EditorApplication.delayCall += () =>
+            if (this == null)
             {
-                if (this == null)
-                {
-                    return;
-                }
-                updateIcon();
-            };
-        }
-
-        public void OnValidate()
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                if (this == null)
-                {
-                    return;
-                }
-                updateIcon();
-            };
-        }
-#endif
-
-        private void updateIcon()
-        {
+                return;
+            }
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
             if (btnIcon == null || btnIcon.icon == null)
             {

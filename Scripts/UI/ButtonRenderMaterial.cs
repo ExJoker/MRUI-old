@@ -16,18 +16,29 @@ namespace MRUI
         [Tooltip("Rednerer that we will assign the material to. If this is null we will try to get the Renderer from the component.")]
         public Renderer rend;
 
-#if UNITY_EDITOR
-        private bool forceUpdate = false;
-#endif
-
         public void Start()
         {
-            MRUI.Button btn = GetComponent<MRUI.Button>();
             rend = (rend == null) ? GetComponentInChildren<Renderer>() : rend;
+        }
+
+        public void OnEnable()
+        {
+            AddEvents();
+        }
+
+
+        public void OnDisable()
+        {
+            RemoveEvents();
+        }
+
+        public void AddEvents()
+        {
+            MRUI.Button btn = GetComponent<MRUI.Button>();
             btn.OnDataChanged.AddListener(updateData);
         }
 
-        public void OnDestroy()
+        public void RemoveEvents()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
             if (btn != null)
@@ -38,34 +49,16 @@ namespace MRUI
 
         public void updateData()
         {
-            // update text next frame - we setting the text directly does not work in Editor!
-#if UNITY_EDITOR
-            forceUpdate = true;
-#else
             UpdateMaterial();
-#endif
         }
 
         private void UpdateMaterial()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
-#if UNITY_EDITOR
-            forceUpdate = false;
-#endif
             if (btn.data.material.normal != null)
             {
                 rend.material = btn.data.material.normal;
             }
         }
-
-#if UNITY_EDITOR
-        private void Update()
-        {
-            if (forceUpdate)
-            {
-                UpdateMaterial();
-            }
-        }
-#endif
     }
 }

@@ -10,44 +10,89 @@ namespace MRUI
     [ExecuteInEditMode]
     public class ButtonIcon : MonoBehaviour
     {
-        [HideInInspector]
-        public UnityEvent OnIconChange;
+        public UnityEvent OnIconChanged;
 
         [HideInInspector]
         public GameObject icon;
 
         public string ICON_NAME = "icon";
 
-        public void Start()
+        private void Awake()
         {
-            MRUI.Button btn = GetComponent<MRUI.Button>();
-            btn.OnDataChanged.AddListener(updateData);
+            if (OnIconChanged == null)
+                OnIconChanged = new UnityEvent(); 
         }
 
-        public void updateData()
+        public void OnEnable()
         {
-            MRUI.Button btn = GetComponent<MRUI.Button>();
-            destroyIcon();
+            AddEvents();
+            UpdateData();
+        }
 
-            if (btn.data != null && btn.data.icon != null)
-            {
-                icon = Instantiate(btn.data.icon, transform);
-                icon.name = ICON_NAME;
-                OnIconChange.Invoke();
-            }
+        public void OnDisable()
+        {
+            RemoveEvents();
         }
 
         private void OnDestroy()
         {
+            // Note that we do not need to call RemoveEvents, because
+            // OnDisabled is called by Destroy automatically
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                DestroyIcon();
+            };
+#else
+            DestroyIcon();
+#endif
+        }
+
+        public void UpdateData()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                if (this == null)
+                {
+                    return;
+                }
+                DestroyIcon();
+                CreateIcon();
+            };
+#else
+            DestroyIcon();
+            CreateIcon();
+#endif
+        }
+
+        private void CreateIcon()
+        {
+            MRUI.Button btn = GetComponent<MRUI.Button>();
+            if (btn.data != null && btn.data.icon != null)
+            {
+                icon = Instantiate(btn.data.icon, transform);
+                icon.name = ICON_NAME;
+                OnIconChanged.Invoke();
+            }
+        }
+
+        public void AddEvents()
+        {
+            MRUI.Button btn = GetComponent<MRUI.Button>();
+            btn.OnDataChanged.AddListener(UpdateData);
+        }
+
+        public void RemoveEvents()
+        {
             MRUI.Button btn = GetComponent<MRUI.Button>();
             if (btn != null)
             {
-                btn.OnDataChanged.RemoveListener(updateData);
+                btn.OnDataChanged.RemoveListener(UpdateData);
             }
-            destroyIcon();
         }
 
-        private void destroyIcon()
+        private void DestroyIcon()
         {
             if (this != null && transform != null)
             {

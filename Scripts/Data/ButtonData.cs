@@ -45,17 +45,17 @@ namespace MRUI
             {
                 title = title,
                 icon = icon,
+                iconScale = iconScale,
                 data = data,
                 selected = selected,
                 active = active,
-                iconScale = iconScale,
                 material = material
             };
         }
 
         /// <summary>
         /// compare data of two ButtonData, returns true if it is the same.
-        /// (ignores purely optical attributes: material and scale)
+        /// used to check if we need to update the UI
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
@@ -65,8 +65,11 @@ namespace MRUI
                 icon != other.icon ||
                 data != other.data ||
                 selected != other.selected ||
-                active != other.active); 
-            //note that we ignore the material and scale because the core data should still be the same.
+                active != other.active ||
+                iconScale != other.iconScale ||
+                material.normal != other.material.normal ||
+                material.pressed != other.material.pressed || 
+                material.highlighted != other.material.highlighted); 
         }
     }
 }

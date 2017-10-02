@@ -47,7 +47,12 @@ namespace MRUI
         private void UpdateText()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
-            GetComponentInChildren<Text>().text = btn.data.title;
+            Text txt = GetComponentInChildren<Text>();
+            txt.text = btn.data.title;
+            
+            // workaround: disable and re-enable to force redraw
+            txt.enabled = !txt.enabled;
+            txt.enabled = !txt.enabled;
         }
     }
 }

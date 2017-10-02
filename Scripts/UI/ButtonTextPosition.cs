@@ -20,7 +20,14 @@ namespace MRUI
         public void OnEnable()
         {
             AddEvents();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                UpdateData();
+            };
+#else
             UpdateData();
+#endif
         }
 
         public void OnDisable()
@@ -54,22 +61,15 @@ namespace MRUI
 
         public void UpdateData()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                UpdatePosition();
-            };
-#else
-            UpdatePosition();
-#endif
-        }
-
-        public void UpdatePosition()
-        {
             if (this == null)
             {
                 return;
             }
+            UpdatePosition();
+        }
+
+        public void UpdatePosition()
+        {
             MRUI.Button btn = GetComponent<MRUI.Button>();
             if (text == null)
             {
@@ -77,16 +77,16 @@ namespace MRUI
             }
             if (btn.data != null && btn.data.icon != null)
             {
-                resizeRepositonText(.03f, 130);
+                ResizeRepositonText(.03f, 130);
             }
             else
             {
-                resizeRepositonText(0, 200);
+                ResizeRepositonText(0, 200);
             }
         }
 
 
-        private void resizeRepositonText(float xPos, int width)
+        private void ResizeRepositonText(float xPos, int width)
         {
             if (text == null || text.canvas == null)
             {

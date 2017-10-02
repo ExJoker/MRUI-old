@@ -34,47 +34,32 @@ namespace MRUI
 
         public float angle;
 
-        [HideInInspector]
-        public UnityEvent OnAngleChanged;
-
         private Mesh mesh;
         private Vector3[] vertices;
         private Vector3[] normals;
         private MeshCollider meshCollider;
 
-        private void Awake()
+        public void OnEnable()
         {
-            if (OnAngleChanged == null)
-            {
-                OnAngleChanged = new UnityEvent();
-            }
-        }
-
-        public void Update()
-        {
-            if (mesh == null)
-            {
-                GetComponent<MeshFilter>().mesh = mesh = new Mesh(); ;
-                meshCollider = GetComponent<MeshCollider>();
-                mesh.name = "MRUiSegmentMesh";
-                updateData();
-            }
+            GetComponent<MeshFilter>().mesh = mesh = new Mesh(); ;
+            meshCollider = GetComponent<MeshCollider>();
+            mesh.name = "MRUiSegmentMesh";
+            UpdateData();
         }
 
         public void setAngle(float angle)
         {
+            if (this == null || transform == null)
+            {
+                return;
+            }
             transform.localEulerAngles = new Vector3(0, 0, angle);
             this.angle = angle;
-            // Debug.Log("Set Angle to " + angle);
-            if (OnAngleChanged != null)
-            {
-                OnAngleChanged.Invoke();
-            }
         }
 
-        public void updateData()
+        public void UpdateData()
         {
-            if (mesh == null)
+            if (this == null || transform == null || mesh == null)
             {
                 return;
             }
@@ -198,8 +183,11 @@ namespace MRUI
             {
                 parts = ((int)(parts / segments) + 1) * segments;
             }
-            updateData();
-            setAngle(angle);
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                setAngle(angle);
+                UpdateData();
+            };
         }
 #endif
     }

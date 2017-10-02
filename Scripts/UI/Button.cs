@@ -14,6 +14,7 @@ namespace MRUI
     public class Button : MonoBehaviour
     {
         public ButtonData data;
+        private ButtonData oldData;
 
         public enum Transition { None, Material };
         public Transition transition;
@@ -44,20 +45,32 @@ namespace MRUI
 
         public void UpdateData()
         {
-            if (OnDataChanged != null)
+            if (OnDataChanged != null && 
+                (data == null || oldData == null || data.compare(oldData)))
             {
                 OnDataChanged.Invoke();
+                oldData = data.copy();
             }
         }
-        
-        private void OnValidate()
+
+        private void OnEnable()
         {
             UpdateData();
         }
 
-        public void OnEnable()
+        private void OnValidate()
         {
+#if UNITY_EDITOR
+            // we want the event to be invoked ASAP, but in the editor we need
+            // to delay the call otherwise we are not allowed to 
+            // instantiate, destroy or transform objects
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                UpdateData();
+            };
+#else
             UpdateData();
+#endif
         }
     }
 }

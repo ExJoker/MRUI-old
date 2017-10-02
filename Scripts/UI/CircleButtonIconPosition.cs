@@ -16,7 +16,14 @@ namespace MRUI
         public void OnEnable()
         {
             AddEvents();
-            updateIcon();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                UpdateIcon();
+            };
+#else
+            UpdateIcon();
+#endif
         }
 
         public void OnDisable()
@@ -27,10 +34,10 @@ namespace MRUI
         public void AddEvents()
         {
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
-            btnIcon.OnIconChanged.AddListener(updateIcon);
+            btnIcon.OnIconChanged.AddListener(UpdateIcon);
 
-            CircleButtonSegment segment = GetComponentInChildren<CircleButtonSegment>();
-            segment.OnAngleChanged.AddListener(updateIcon);
+            Button btn = GetComponent<Button>();
+            btn.OnDataChanged.AddListener(UpdateIcon);
         }
 
         public void RemoveEvents()
@@ -38,26 +45,30 @@ namespace MRUI
             ButtonIcon btnIcon = GetComponent<ButtonIcon>();
             if (btnIcon != null)
             {
-                btnIcon.OnIconChanged.RemoveListener(updateIcon);
+                btnIcon.OnIconChanged.RemoveListener(UpdateIcon);
             }
 
-            CircleButtonSegment segment = GetComponentInChildren<CircleButtonSegment>();
-            if (segment != null)
+            Button btn = GetComponent<Button>();
+            if (btn != null)
             {
-                segment.OnAngleChanged.RemoveListener(updateIcon);
+                btn.OnDataChanged.RemoveListener(UpdateIcon);
             }
         }
 
 #if UNITY_EDITOR
         public void OnValidate()
         {
-            updateIcon();
+            UpdateIcon();
         }
 #endif
 
         // Use this for initialization
-        public void updateIcon()
+        public void UpdateIcon()
         {
+            if (this == null)
+            {
+                return;
+            }
             CircleButtonSegment segment = GetComponentInChildren<CircleButtonSegment>();
             if (segment != null)
             {
@@ -74,12 +85,6 @@ namespace MRUI
             {
                 return;
             }
-            Button btn = GetComponent<MRUI.Button>();
-            if (btn != null && btn.data != null)
-            {
-                btnIcon.icon.transform.localScale = btn.data.iconScale;
-            }
-                
             btnIcon.icon.transform.localPosition = fixPosition;
         }
     }

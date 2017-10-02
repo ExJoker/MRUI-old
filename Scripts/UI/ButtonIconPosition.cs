@@ -16,9 +16,6 @@ namespace MRUI
         [Tooltip("Position the icon will be moved to, when it is set. Use with the MRUiButtonIcon-Script")]
         public Vector3 fixPosition = new Vector3(-0.06f, 0, -0.011f);
 
-        [Tooltip("Scale for the icon")]
-        public Vector3 fixScale = new Vector3(0.03f, 0.03f, 1f);
-
         public void OnEnable()
         {
             AddEvents();
@@ -63,15 +60,7 @@ namespace MRUI
             {
                 return;
             }
-            Button btn = GetComponent<MRUI.Button>();
-            if (btn != null && btn.data != null)
-            {
-                btnIcon.icon.transform.localScale = btn.data.iconScale;
-            }
-            else
-            {
-                btnIcon.icon.transform.localScale = fixScale;
-            }
+            
             btnIcon.icon.transform.localPosition = fixPosition;
         }
     }

@@ -249,7 +249,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1978345166738152}
-  m_LocalRotation: {x: -0, y: -0, z: -0.25881907, w: 0.9659259}
+  m_LocalRotation: {x: 0, y: 0, z: -0.25881907, w: 0.9659259}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -278,7 +278,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1757956334723532}
-  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -291,7 +291,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1377244416876680}
-  m_LocalRotation: {x: -0, y: -0, z: 0.9659259, w: -0.25881907}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9659259, w: -0.25881907}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -548,23 +548,43 @@ MonoBehaviour:
   data:
   - title: Bottom
     icon: {fileID: 0}
+    iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
+    material:
+      normal: {fileID: 0}
+      highlighted: {fileID: 0}
+      pressed: {fileID: 0}
   - title: Left
     icon: {fileID: 0}
+    iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
+    material:
+      normal: {fileID: 0}
+      highlighted: {fileID: 0}
+      pressed: {fileID: 0}
   - title: Right
     icon: {fileID: 0}
+    iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
-  forceUpdate: 1
+    material:
+      normal: {fileID: 0}
+      highlighted: {fileID: 0}
+      pressed: {fileID: 0}
   innerRadius: 0.04
   outerRadius: 0.1
   width: 0.04
+  OnSelected:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: MRUI.OnSelectedEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  UpdateDataNextFrame: 0
 --- !u!114 &114115916201277992
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -579,10 +599,14 @@ MonoBehaviour:
   data:
     title: Left
     icon: {fileID: 0}
+    iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
-  dataDefinesSizeAndPosition: 0
+    material:
+      normal: {fileID: 0}
+      highlighted: {fileID: 0}
+      pressed: {fileID: 0}
   transition: 0
   normalMaterial: {fileID: 0}
   highlightedMaterial: {fileID: 0}
@@ -615,7 +639,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  rend: {fileID: 0}
 --- !u!114 &114118890123218028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -826,10 +849,14 @@ MonoBehaviour:
   data:
     title: Bottom
     icon: {fileID: 0}
+    iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
-  dataDefinesSizeAndPosition: 0
+    material:
+      normal: {fileID: 0}
+      highlighted: {fileID: 0}
+      pressed: {fileID: 0}
   transition: 0
   normalMaterial: {fileID: 0}
   highlightedMaterial: {fileID: 0}
@@ -862,7 +889,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  rend: {fileID: 0}
 --- !u!114 &114658468157384236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -921,10 +947,14 @@ MonoBehaviour:
   data:
     title: Right
     icon: {fileID: 0}
+    iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
-  dataDefinesSizeAndPosition: 0
+    material:
+      normal: {fileID: 0}
+      highlighted: {fileID: 0}
+      pressed: {fileID: 0}
   transition: 0
   normalMaterial: {fileID: 0}
   highlightedMaterial: {fileID: 0}
@@ -957,7 +987,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  rend: {fileID: 0}
 --- !u!114 &114889026682395982
 MonoBehaviour:
   m_ObjectHideFlags: 1

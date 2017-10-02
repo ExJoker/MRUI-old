@@ -17,13 +17,16 @@ namespace MRUI
 
         public string ICON_NAME = "icon";
 
+        [Tooltip("Scale for the icon")]
+        public Vector3 fixScale = new Vector3(0.03f, 0.03f, 1f);
+
         private void Awake()
         {
             if (OnIconChanged == null)
                 OnIconChanged = new UnityEvent(); 
         }
 
-        public void OnEnable()
+        public void OnEnable() 
         {
             AddEvents();
             UpdateData();
@@ -50,20 +53,26 @@ namespace MRUI
 
         public void UpdateData()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                if (this == null)
-                {
-                    return;
-                }
-                DestroyIcon();
-                CreateIcon();
-            };
-#else
             DestroyIcon();
             CreateIcon();
-#endif
+            UpdateIconScale();
+        }
+
+        private void UpdateIconScale()
+        {
+            if (icon == null)
+            {
+                return;
+            }
+            Button btn = GetComponent<MRUI.Button>();
+            if (btn != null && btn.data != null)
+            {
+                icon.transform.localScale = btn.data.iconScale;
+            }
+            else
+            {
+                icon.transform.localScale = fixScale;
+            }
         }
 
         private void CreateIcon()
@@ -73,6 +82,7 @@ namespace MRUI
             {
                 icon = Instantiate(btn.data.icon, transform);
                 icon.name = ICON_NAME;
+
                 OnIconChanged.Invoke();
             }
         }

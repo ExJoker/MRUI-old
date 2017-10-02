@@ -32,26 +32,61 @@ namespace MRUI
         [SerializeField]
         public OnSelectedEvent OnSelected;
 
-        /// <summary>
-        /// user selected one of the options by pressing a button 
-        /// </summary>
-        public void OnButtonPressed(ButtonData data)
+        private int OnPressedHashCode = 0;
+
+        void OnEnable()
         {
-            if (OnSelected != null)
+            UpdateData();
+        }
+
+        private void OnValidate()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
             {
-                OnSelected.Invoke(data.data);
+                UpdateData();
+            };
+#else
+            UpdateData();
+#endif
+        }
+
+
+        void DestroyButtons()
+        {
+            // we can not delete items from a list while iterating over it
+            for (int i = transform.childCount - 1; i >= data.Count; i--)
+            {
+                DestroyImmediate(transform.GetChild(i).gameObject);
             }
         }
 
-        void updateButtons()
+        void CreateButtons()
         {
-            if (this == null)
+            if (this == null || transform == null)
             {
-                // because this is a delayed call it might be that the object has already been destroyed
                 return;
             }
-            destroyButtons();
+            if (CircleButtonPrefab == null)
+            {
+                Debug.LogError("No Prefab set for button Group");
+            }
+            else
+            {
+                for (int i = transform.childCount; i < data.Count; i++)
+                {
+                    ButtonData buttonData = data[i];
+                    Instantiate(CircleButtonPrefab, transform);
+                }
+            }
+        }
 
+        void UpdateButtons()
+        {
+            if (data.Count == 0)
+            {
+                return;
+            }
             switch (data.Count)
             {
                 case 10:
@@ -67,70 +102,96 @@ namespace MRUI
                     break;
             }
 
-            if (data != null && CircleButtonPrefab != null && data.Count > 0)
+
+            // create new buttons and rotate them
+            float angle = 360 / data.Count;
+            for (int i = 0; i < data.Count; i++)
             {
-                // create new buttons and rotate them
-                float angle = 360 / data.Count;
-                for (int i = 0; i < data.Count; i++)
+                ButtonData buttonData = data[i];
+                GameObject btnInst = transform.GetChild(i).gameObject;
+                MRUI.Button btn = btnInst.GetComponent<MRUI.Button>();
+
+                if (OnPressedHashCode != btn.OnPressed.GetHashCode())
                 {
-                    ButtonData buttonData = data[i];
-                    GameObject btnInst = Instantiate(CircleButtonPrefab, transform);
-
-                    MRUI.Button btn = btnInst.GetComponent<MRUI.Button>();
                     btn.OnPressed.AddListener(delegate { OnButtonPressed(buttonData); });
-                    btn.data = buttonData;
-                    btn.UpdateData();
-                    
-                    
-                    CircleButtonSegment segment = btnInst.GetComponentInChildren<CircleButtonSegment>();
-                    segment.parts = parts;
-                    segment.innerRadius = innerRadius;
-                    segment.outerRadius = outerRadius;
-                    segment.width = width;
-                    segment.segments = data.Count;
-                    int add = 0;
-                    switch (data.Count)
-                    {
-                        case 5:
-                            add = -16;
-                            break;
-                        case 4:
-                            add = -45;
-                            break;
-                        case 3:
-                            add = -30;
-                            break;
-                    }
-                    segment.setAngle(angle*i+add);
-
+                    OnPressedHashCode = btn.OnPressed.GetHashCode();
                 }
+                btn.data = buttonData;
+                    
+                CircleButtonSegment segment = btnInst.GetComponentInChildren<CircleButtonSegment>();
+                segment.parts = parts;
+                segment.innerRadius = innerRadius;
+                segment.outerRadius = outerRadius;
+                segment.width = width;
+                segment.segments = data.Count;
+                int add = 0;
+                switch (data.Count)
+                {
+                    case 5:
+                        add = -16;
+                        break;
+                    case 4:
+                        add = -45;
+                        break;
+                    case 3:
+                        add = -30;
+                        break;
+                }
+                segment.setAngle(angle*i+add);
+                segment.UpdateData();
+
+                // force redraw
+                btn.OnDataChanged.Invoke();
             }
         }
 
-        void destroyButtons()
+        /// <summary>
+        /// user selected one of the options by pressing a button 
+        /// </summary>
+        public void OnButtonPressed(ButtonData data)
         {
-            List<GameObject> children = new List<GameObject>();
-            // we can not delete items from a list while iterating over it
-            foreach (Transform child in transform)
+            if (OnSelected != null)
             {
-                children.Add(child.gameObject);
+                OnSelected.Invoke(data.data);
             }
-            for (int i = children.Count - 1; i >= 0; i--)
+        }
+
+        public bool UpdateDataNextFrame = false;
+
+        // workaround to update data from external thread (e.g. socket communication)
+        public void Update()
+        {
+            if (UpdateDataNextFrame == true)
             {
-                DestroyImmediate(children[i]);
+                UpdateData();
+                UpdateDataNextFrame = false;
             }
         }
 
         public void UpdateData()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.delayCall += () =>
+            if (this == null || transform == null)
             {
-                updateButtons();
-            };
-#else
-            updateButtons();
-#endif
+                return;
+            }
+            DestroyButtons();
+            if (data == null)
+            {
+                return;
+            }
+            CreateButtons();
+            UpdateButtons();
+        }
+
+
+        public void OnDestroy()
+        {
+            this.data.Clear();
+            DestroyButtons();
+            if (OnSelected != null)
+            {
+                OnSelected.RemoveAllListeners();
+            }
         }
     }
 }

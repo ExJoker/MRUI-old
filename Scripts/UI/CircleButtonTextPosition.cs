@@ -19,7 +19,49 @@ namespace MRUI
 
         private CircleButtonSegment segment;
 
-        void Start()
+        public void OnEnable()
+        {
+            AddEvents();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                UpdateData();
+            };
+#else
+            UpdateData();
+#endif
+        }
+
+        public void OnDisable()
+        {
+            RemoveEvents();
+        }
+
+        public void AddEvents()
+        {
+            Button btn = GetComponent<Button>();
+            btn.OnDataChanged.AddListener(UpdateData);
+        }
+
+        public void RemoveEvents()
+        {
+            Button btn = GetComponent<Button>();
+            if (btn != null)
+            {
+                btn.OnDataChanged.RemoveListener(UpdateData);
+            }
+        }
+
+        public void UpdateData()
+        {
+            if (this == null)
+            {
+                return;
+            }
+            UpdatePosition();
+        }
+
+        void UpdatePosition()
         {
             segment = GetComponentInChildren<CircleButtonSegment>();
             if (segment == null)

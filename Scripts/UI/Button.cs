@@ -49,7 +49,14 @@ namespace MRUI
                 (data == null || oldData == null || data.compare(oldData)))
             {
                 OnDataChanged.Invoke();
-                oldData = data.copy();
+                if (data == null)
+                {
+                    oldData = null;
+                }
+                else
+                {
+                    oldData = data.copy();
+                }
             }
         }
 

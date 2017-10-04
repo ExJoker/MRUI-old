@@ -96,6 +96,11 @@ namespace MRUI {
 
         void UpdateButtons()
         {
+            if (ButtonPrefab == null)
+            {
+                Debug.LogError("No Prefab set for button Group");
+                return;
+            }
             // center buttons
             int rows = System.Math.Min(maxRows, data.Count);
             int columns = (data.Count - 1) / maxRows + 1;

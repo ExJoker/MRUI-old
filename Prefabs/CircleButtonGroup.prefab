@@ -552,30 +552,18 @@ MonoBehaviour:
     data: 
     selected: 0
     active: 0
-    material:
-      normal: {fileID: 0}
-      highlighted: {fileID: 0}
-      pressed: {fileID: 0}
   - title: Left
     icon: {fileID: 0}
     iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
-    material:
-      normal: {fileID: 0}
-      highlighted: {fileID: 0}
-      pressed: {fileID: 0}
   - title: Right
     icon: {fileID: 0}
     iconScale: {x: 0.04, y: 0.04, z: 1}
     data: 
     selected: 0
     active: 0
-    material:
-      normal: {fileID: 0}
-      highlighted: {fileID: 0}
-      pressed: {fileID: 0}
   innerRadius: 0.04
   outerRadius: 0.1
   width: 0.04
@@ -603,10 +591,6 @@ MonoBehaviour:
     data: 
     selected: 0
     active: 0
-    material:
-      normal: {fileID: 0}
-      highlighted: {fileID: 0}
-      pressed: {fileID: 0}
   transition: 0
   normalMaterial: {fileID: 0}
   highlightedMaterial: {fileID: 0}
@@ -853,10 +837,6 @@ MonoBehaviour:
     data: 
     selected: 0
     active: 0
-    material:
-      normal: {fileID: 0}
-      highlighted: {fileID: 0}
-      pressed: {fileID: 0}
   transition: 0
   normalMaterial: {fileID: 0}
   highlightedMaterial: {fileID: 0}
@@ -951,10 +931,6 @@ MonoBehaviour:
     data: 
     selected: 0
     active: 0
-    material:
-      normal: {fileID: 0}
-      highlighted: {fileID: 0}
-      pressed: {fileID: 0}
   transition: 0
   normalMaterial: {fileID: 0}
   highlightedMaterial: {fileID: 0}

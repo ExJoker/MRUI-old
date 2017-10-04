@@ -37,7 +37,7 @@ namespace MRUI
         [Tooltip("Use disabled-material and ignore selection")]
         public bool active = true;
 
-        public ButtonMaterial material;
+        public ButtonMaterial? material;
 
         public ButtonData copy()
         {
@@ -61,15 +61,26 @@ namespace MRUI
         /// <returns></returns>
         public bool compare(ButtonData other)
         {
+            bool materialDifferent = true;
+            if (other.material == null && material == null)
+            {
+                materialDifferent = false;
+            }
+            else if (material != null && other.material != null)
+            {
+                materialDifferent = 
+                    material.Value.normal != other.material.Value.normal ||
+                    material.Value.pressed != other.material.Value.pressed ||
+                    material.Value.highlighted != other.material.Value.highlighted;
+            }
+
             return (title != other.title ||
                 icon != other.icon ||
                 data != other.data ||
                 selected != other.selected ||
                 active != other.active ||
                 iconScale != other.iconScale ||
-                material.normal != other.material.normal ||
-                material.pressed != other.material.pressed || 
-                material.highlighted != other.material.highlighted); 
+                materialDifferent); 
         }
     }
 }

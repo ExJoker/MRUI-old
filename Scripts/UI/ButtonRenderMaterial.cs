@@ -55,9 +55,9 @@ namespace MRUI
         private void UpdateMaterial()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
-            if (btn.data.material.normal != null)
+            if (btn.data.material != null && btn.data.material.Value.normal != null)
             {
-                rend.material = btn.data.material.normal;
+                rend.material = btn.data.material.Value.normal;
             }
         }
     }

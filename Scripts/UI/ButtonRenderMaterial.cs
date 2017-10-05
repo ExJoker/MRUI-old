@@ -18,12 +18,18 @@ namespace MRUI
 
         public void Start()
         {
-            rend = (rend == null) ? GetComponentInChildren<Renderer>() : rend;
+            GetRenderer();
+        }
+
+        public void OnValidate()
+        {
+            UpdateMaterial();
         }
 
         public void OnEnable()
         {
             AddEvents();
+            UpdateMaterial();
         }
 
 
@@ -52,12 +58,18 @@ namespace MRUI
             UpdateMaterial();
         }
 
-        private void UpdateMaterial()
+        public void GetRenderer()
+        {
+            rend = rend ?? GetComponentInChildren<Renderer>();
+        }
+
+        public virtual void UpdateMaterial()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
-            if (btn.data.material != null && btn.data.material.Value.normal != null)
+            GetRenderer();
+            if (btn.data.material.normal != null && rend != null)
             {
-                rend.material = btn.data.material.Value.normal;
+                rend.material = btn.data.material.normal;
             }
         }
     }

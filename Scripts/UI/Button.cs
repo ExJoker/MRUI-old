@@ -18,11 +18,7 @@ namespace MRUI
 
         public enum Transition { None, Material };
         public Transition transition;
-
-        public Material normalMaterial;
-        public Material highlightedMaterial;
-        public Material pressedMaterial;
-
+        
         public float fadeDuration = .1f;
 
         [Tooltip("defines if this should behave like a toggle button")]

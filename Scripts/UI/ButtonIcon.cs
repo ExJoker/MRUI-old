@@ -20,6 +20,8 @@ namespace MRUI
         [Tooltip("Scale for the icon")]
         public Vector3 fixScale = new Vector3(0.03f, 0.03f, 1f);
 
+        public Material material;
+
         private void Awake()
         {
             if (OnIconChanged == null)
@@ -75,12 +77,25 @@ namespace MRUI
             }
         }
 
+        public void SetMaterial(Material material)
+        {
+            this.material = material;
+            if (icon != null)
+            {
+                icon.GetComponent<Renderer>().material = material;
+            }
+        }
+
         private void CreateIcon()
         {
             MRUI.Button btn = GetComponent<MRUI.Button>();
             if (btn.data != null && btn.data.icon != null)
             {
                 icon = Instantiate(btn.data.icon, transform);
+                if (material != null)
+                {
+                    icon.GetComponent<Renderer>().material = material;
+                }
                 icon.name = ICON_NAME;
 
                 OnIconChanged.Invoke();

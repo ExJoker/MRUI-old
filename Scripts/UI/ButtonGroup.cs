@@ -30,9 +30,17 @@ namespace MRUI {
         [SerializeField]
         public OnSelectedEvent OnSelected;
 
+        public UnityEvent OnDataChange;
+
         public GameObject ButtonPrefab;
-        
-	    void OnEnable()
+
+        private void Awake()
+        {
+            if (OnDataChange == null)
+                OnDataChange = new UnityEvent();
+        }
+
+        void OnEnable()
         {
             UpdateData();
         }
@@ -123,6 +131,10 @@ namespace MRUI {
                 btnInst.transform.localPosition = new Vector3(
                     ((i / rows) - ((columns - 1) / 2f)) * buttonDistanceHorizontal,
                     -(j - (rows - 1) / 2f) * buttonDistanceVertical);
+                if (OnDataChange != null)
+                {
+                    OnDataChange.Invoke();
+                }
             }
         }
 

@@ -29,6 +29,11 @@ namespace MRUI
 #endif
         }
 
+        public void OnValidate()
+        {
+            UpdateIcon();
+        }
+
         public void OnDisable()
         {
             RemoveEvents();
